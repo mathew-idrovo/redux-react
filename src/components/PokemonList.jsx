@@ -1,18 +1,14 @@
-import React from 'react'
-import PokemonCard from './PokemonCard'
+import { PokemonCard } from './PokemonCard'
+import './PokemonList.css'
 
 const PokemonList = ({ pokemons = [] }) => {
   return (
-    <div>
-      {pokemons.map((pokemon, index) => {
-        return <PokemonCard name={pokemon.name || 'Desconocido'} key={index} />
-      })}
+    <div className="PokemonList">
+      {pokemons.map((pokemon) => (
+        <PokemonCard url={pokemon.url} name={pokemon.name} key={pokemon.name} />
+      ))}
     </div>
   )
 }
 
-PokemonList.defaultProps = {
-  pokemons: Array(10).fill(''),
-}
-
-export default PokemonList
+export { PokemonList }

@@ -4,41 +4,39 @@ import viteLogo from '/vite.svg'
 import logo from './assets/logo.svg'
 import './App.css'
 import { Button, Col } from 'antd'
-import PokemonList from './components/PokemonList'
+
 import { useEffect } from 'react'
-import { getPokemon } from './api'
-import { setPokemons as setPokemonsActions } from './actions'
-import { connect } from 'react-redux'
+import { PokemonList } from './components/PokemonList'
+import { getPokemons } from './api'
+import { useDispatch, useSelector } from 'react-redux'
+import { setPokemons } from './actions'
 
-function App({ pokemons, setPokemons }) {
-  console.log('🚀 ~ file: App.js ~ line 12 ~ App ~ pokemons', pokemons)
+function App() {
+  const dispatch = useDispatch()
+  const pokemons = useSelector((state) => state.pokemon?.pokemons || []) // ✅ Acceder correctamente a Redux
+  console.log('Estado en Redux:', pokemons)
+
   useEffect(() => {
-    const fetchPokemons = async () => {
-      const pokemonsRes = await getPokemon()
-      console.log('datos', pokemonsRes)
+    async function fetchPokemon() {
+      const pkmns = await getPokemons()
+      console.log('datos', pkmns)
 
-      setPokemons(pokemonsRes || [])
+      dispatch(setPokemons(pkmns || [])) // ✅ Evita errores si `getPokemons` devuelve `undefined`
     }
-    fetchPokemons()
-  }, [])
+    fetchPokemon()
+  }, [dispatch])
+
   return (
-    <>
-      <div className="App">
-        <Col span={6}>
-          <img src={logo} alt="Pokedux" />
-        </Col>
-        <Col></Col>
-        <PokemonList pokemons={pokemons} />
-      </div>
-    </>
+    <div className="App">
+      <Col span={4} offset={10}>
+        <img src={logo} alt="Pokedux" />
+      </Col>
+      <Col span={8} offset={8}>
+        {/*<Search />*/}
+      </Col>
+      <PokemonList pokemons={pokemons} />
+    </div>
   )
 }
-const mapStateToProps = (state) => ({
-  pokemons: state.pokemons,
-})
 
-const mapDispatchToProps = (dispatch) => ({
-  setPokemons: (value) => dispatch(setPokemonsActions(value)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default App

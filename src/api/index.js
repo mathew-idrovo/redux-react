@@ -1,9 +1,16 @@
+// api.js
 import axios from 'axios'
-import React from 'react'
 
-export const getPokemon = () => {
-  return axios
-    .get('https://pokeapi.co/api/v2/pokemon?limit=151')
-    .then((res) => res.data.results)
-    .catch((err) => console.log(err))
+export const getPokemons = async () => {
+  try {
+    const { data } = await axios.get(
+      'https://pokeapi.co/api/v2/pokemon?limit=151'
+    )
+    console.log('api', data)
+    return data.results
+    // ✅ Ya no necesita `types`
+  } catch (err) {
+    console.error('Error obteniendo Pokémon:', err)
+    return []
+  }
 }
