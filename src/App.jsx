@@ -7,24 +7,22 @@ import { Button, Col } from 'antd'
 
 import { useEffect } from 'react'
 import { PokemonList } from './components/PokemonList'
-import { getPokemons } from './api'
+import { getPokemons, getPokemonsDetail } from './api'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPokemons } from './actions'
 
 function App() {
   const dispatch = useDispatch()
-  const pokemons = useSelector((state) => state.pokemon?.pokemons || []) // ✅ Acceder correctamente a Redux
-  console.log('Estado en Redux:', pokemons)
+  const pokemons = useSelector((state) => state.pokemon?.pokemons || [])
 
   useEffect(() => {
     async function fetchPokemon() {
       const pkmns = await getPokemons()
-      console.log('datos', pkmns)
 
-      dispatch(setPokemons(pkmns || [])) // ✅ Evita errores si `getPokemons` devuelve `undefined`
+      dispatch(setPokemons(detailPokemons || []))
     }
     fetchPokemon()
-  }, [dispatch])
+  }, [])
 
   return (
     <div className="App">
