@@ -9,19 +9,24 @@ import { useEffect } from 'react'
 import { PokemonList } from './components/PokemonList'
 import { getPokemons, getPokemonsDetail } from './api'
 import { useDispatch, useSelector } from 'react-redux'
-import { setPokemons } from './actions'
+import { getPokemonsWithDetail, setPokemons } from './actions'
 
 function App() {
   const dispatch = useDispatch()
   const pokemons = useSelector((state) => state.pokemon?.pokemons || [])
 
   useEffect(() => {
-    async function fetchPokemon() {
-      const pkmns = await getPokemons()
+    const fetchPokemons = async () => {
+      console.log('🔍 Ejecutando fetchPokemons()...')
 
-      dispatch(setPokemons(detailPokemons || []))
+      const pkmns = await getPokemons() // ✅ Llamada a la API
+      console.log('✅ Pokémon obtenidos:', pkmns)
+
+      dispatch(getPokemonsWithDetail(pkmns)) // ✅ Enviar a Redux Thunk
+      console.log('🚀 Dispatch ejecutado con getPokemonsWithDetail')
     }
-    fetchPokemon()
+
+    fetchPokemons()
   }, [])
 
   return (

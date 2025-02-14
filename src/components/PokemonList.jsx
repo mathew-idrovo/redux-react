@@ -5,7 +5,11 @@ const PokemonList = ({ pokemons = [] }) => {
   return (
     <div className="PokemonList">
       {pokemons.map((pokemon) => (
-        <PokemonCard url={pokemon.url} name={pokemon.name} key={pokemon.name} />
+        <PokemonCard
+          url={pokemon.sprites.front_default}
+          name={pokemon.name}
+          key={pokemon.name}
+        />
       ))}
     </div>
   )
